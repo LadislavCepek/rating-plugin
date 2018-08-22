@@ -33,6 +33,10 @@ export default class Rating extends Component
         this.value = this.props.defaultValue;
         
         this.init();
+
+        this.props.icon.config(config.icon);
+        this.props.filledIcon.config(config.filledIcon);
+        this.props.cancelIcon.config(config.cancelIcon);
     }
 
     public init()

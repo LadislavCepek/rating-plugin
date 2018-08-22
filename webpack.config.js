@@ -18,6 +18,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'rating.js'
+        filename: 'rating.js',
+        libraryTarget: 'var',
+        library: 'RatingPluginApi'
     }
 };
