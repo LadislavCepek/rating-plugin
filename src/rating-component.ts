@@ -73,11 +73,13 @@ export default class Rating extends Component
 
     protected innerRender()
     {
-        let cancelNode = this.cancel.render();
+        if (!this.readonly) {
+            let cancelNode = this.cancel.render();
 
-        cancelNode.addEventListener('click', this.onCancelClick.bind(this));
+            cancelNode.addEventListener('click', this.onCancelClick.bind(this));
 
-        this.node.appendChild(cancelNode);
+            this.node.appendChild(cancelNode);
+        }
 
         for(let value = this.minValue, n = this.maxValue; value <= n; value++) {
             let star = new StarComponent({
