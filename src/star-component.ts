@@ -6,16 +6,6 @@ export default class StarComponent extends IconComponent
     public filledIcon: Icon;
     public value: number;
 
-    public constructor(id: string, icon: Icon, filledIcon: Icon, value: number, config: any = null)
-    {
-        super(id, icon, config);
-
-        this.filledIcon = filledIcon;
-        this.value = value;
-
-        this.init();
-    }
-
     public refresh()
     {
         this.changeIcon(this.icon);
@@ -24,5 +14,12 @@ export default class StarComponent extends IconComponent
     public fill()
     {
         this.changeIcon(this.filledIcon);
+    }
+
+    protected setDefaultProps(): void
+    {
+        this.icon = new Icon({name: 'star', size: Icon.SIZE_XXL, type: 'far'})
+        this.filledIcon = new Icon({name: 'star', size: Icon.SIZE_XXL})
+        this.value = null;
     }
 }

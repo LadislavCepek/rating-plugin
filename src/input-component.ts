@@ -2,34 +2,41 @@ import Component from "./component";
 
 export default class InputComponent extends Component
 {
+    public selector: string;
     public name: string;
-    public type: string = 'hidden';
-    public value: string;
-
-    public constructor(name: string, value: string, type: string = 'hidden', config: any = null)
-    {
-        super(config);
-
-        this.name = name;
-        this.value = value;
-        this.type = type;
-
-        this.init();
-    }
+    public type: string;
+    public value: number;
 
     public render()
     {
-        this.node = document.createElement('input');
-        this.node.setAttribute('name', this.name);
-        this.node.setAttribute('type', 'hidden');
-        this.node.setAttribute('value', this.value);
+        super.render();
+
+        if (this.selector) {
+            this.node = document.querySelector(this.selector);
+        }
+
+        if (!this.node) {
+            this.node = document.createElement('input');
+            this.node.setAttribute('name', this.name);
+            this.node.setAttribute('type', 'hidden');
+        }
+
+        this.changeValue(this.value);
 
         return this.node;
     }
 
-    public changeValue(value: string)
+    public changeValue(value: number)
     {
         this.value = value;
-        this.node.setAttribute('value', value);
+        this.node.setAttribute('value', value !== null ? value.toString() : null);
+    }
+
+    protected setDefaultProps(): void
+    {
+        this.selector = null;
+        this.name = null;
+        this.type = 'hidden';
+        this.value = null;
     }
 }

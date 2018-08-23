@@ -4,17 +4,7 @@ import Icon from "./icon";
 export default class IconComponent extends Component
 {
     public icon: Icon;
-    public id: string;
-
-    public constructor(id: string, icon: Icon, config: any = null)
-    {
-        super(config);
-
-        this.id = id;
-        this.icon = icon;
-
-        this.init();
-    }
+    public title: string;
 
     public render() : HTMLElement
     {
@@ -25,15 +15,32 @@ export default class IconComponent extends Component
         return this.node;
     }
 
+    protected setDefaultProps()
+    {
+        this.icon = null;
+        this.title = null;
+    }
+
     protected createIcon()
     {
-        if (this.icon.props.href) {
+        if (this.icon === null) {
+            this.icon = new Icon();
+        }
+
+        if (this.icon.src !== null) {
             this.node = document.createElement('img');
+            this.node.setAttribute('src', this.icon.src);
         } else {
             this.node = document.createElement('span');
         }
 
-        this.node.setAttribute('id', this.id);
+        if (this.id) {
+            this.node.setAttribute('id', this.id);
+        }
+
+        if(this.title) {
+            this.node.setAttribute('title', this.title);
+        }
 
         this.changeIcon(this.icon);
 
@@ -42,8 +49,8 @@ export default class IconComponent extends Component
 
     protected changeIcon(icon: Icon)
     {
-        if (this.icon.props.href !== null) {
-            this.node.setAttribute('href', this.icon.props.href);
+        if (icon.src !== null) {
+            this.node.setAttribute('src', icon.src);
         } else {
             this.node.setAttribute('class', this.getIconClass(icon));
         }
@@ -51,6 +58,6 @@ export default class IconComponent extends Component
 
     protected getIconClass(icon: Icon)
     {
-        return `${icon.props.type} fa-${icon.props.name} fa-${icon.props.size} text-${icon.props.color}`;
+        return `${icon.type} fa-${icon.name} fa-${icon.size} text-${icon.color}`;
     }
 }
