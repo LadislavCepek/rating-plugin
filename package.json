@@ -1,7 +1,13 @@
 {
-  "name": "rating",
+  "name": "rating-plugin",
   "version": "0.1.1",
   "description": "Typescript rating plugin",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
   "main": "index.js",
   "scripts": {
     "build:dev": "webpack --display-error-details -w --config webpack.dev.js",
