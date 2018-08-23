@@ -16,7 +16,8 @@ export default class Rating extends Component
     public icon: object;
     public filledIcon: object;
     public cancelIcon: object;
-    public fillUp: boolean;    
+    public fillUp: boolean;
+    public readonly: boolean;
 
     protected stars: StarComponent[] = [];
     protected input: InputComponent = null;
@@ -67,6 +68,7 @@ export default class Rating extends Component
             this.cancelIcon = { name: 'ban', size: Icon.SIZE_XL };
             this.fillUp = true;
             this.value = null;
+            this.readonly = false;
     }
 
     protected innerRender()
@@ -89,9 +91,10 @@ export default class Rating extends Component
             this.stars[value] = star;
 
             let starNode = star.render();
-            starNode.addEventListener('click', this.onClick.bind(this));
-            starNode.addEventListener('mouseover', this.onMouseOver.bind(this));
-            starNode.addEventListener('mouseout', this.onMouseOut.bind(this));
+
+            if (!this.readonly) {
+                this.registerEventListeners(starNode);
+            }
             
             this.node.appendChild(starNode);
         }
@@ -104,6 +107,13 @@ export default class Rating extends Component
         }
 
         this.node.appendChild(this.input.render());
+    }
+
+    protected registerEventListeners(node: HTMLElement)
+    {
+        node.addEventListener('click', this.onClick.bind(this));
+        node.addEventListener('mouseover', this.onMouseOver.bind(this));
+        node.addEventListener('mouseout', this.onMouseOut.bind(this));
     }
 
     protected onClick(event: any)
@@ -186,7 +196,6 @@ export default class Rating extends Component
         let shouldFill = true;
 
         this.stars.forEach(star => {
-            console.log(star.id);
             if (star.id === currentStar.id) {
                 shouldFill = false;
             } 
