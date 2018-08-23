@@ -1,9 +1,9 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.ts',
-    devtool: 'inline-source-map',
     module: {
         rules: [
             {
@@ -18,8 +18,14 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'rating.js',
+        filename: 'rating.min.js',
         libraryTarget: 'var',
         library: 'RatingPluginApi'
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [new UglifyJsPlugin({
+            include: /\.min\.js$/
+        })]
     }
 };
