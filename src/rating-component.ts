@@ -21,13 +21,13 @@ export default class Rating extends Component
     protected stars: StarComponent[] = [];
     protected input: InputComponent = null;
     protected cancel: IconComponent = null;
-    protected clickedStar: StarComponent = null;
+    protected currentStar: StarComponent = null;
 
     public init()
     {
         super.init();
-        
-        if (this.value !== null) {
+
+        if (this.value === null) {
             this.value = this.defaultValue;
         }
 
@@ -96,14 +96,21 @@ export default class Rating extends Component
             this.node.appendChild(starNode);
         }
 
+        if (this.value >= this.minValue && this.value <= this.maxValue) {
+            if (this.stars[this.value] !== undefined) {
+                this.currentStar = this.stars[this.value]
+                this.fill(this.stars[this.value]);
+            }
+        }
+
         this.node.appendChild(this.input.render());
     }
 
     protected onClick(event: any)
     {
-        this.clickedStar = this.onChange(event);
+        this.currentStar = this.onChange(event);
 
-        this.input.changeValue(this.clickedStar.value);
+        this.input.changeValue(this.currentStar.value);
     }
 
     protected onMouseOver(event: any)
@@ -115,12 +122,12 @@ export default class Rating extends Component
     {
         this.refresh();
 
-        if (this.clickedStar) {
+        if (this.currentStar) {
             if (this.fillUp) {
-                this.fill(this.clickedStar);
+                this.fill(this.currentStar);
             }
     
-            this.clickedStar.fill();
+            this.currentStar.fill();
         }
     }
 
@@ -171,7 +178,7 @@ export default class Rating extends Component
         this.value = this.defaultValue;
         this.input.changeValue(this.value)
 
-        this.clickedStar = null;
+        this.currentStar = null;
     }
 
     protected fill(currentStar: StarComponent)
@@ -179,6 +186,7 @@ export default class Rating extends Component
         let shouldFill = true;
 
         this.stars.forEach(star => {
+            console.log(star.id);
             if (star.id === currentStar.id) {
                 shouldFill = false;
             } 
