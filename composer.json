@@ -3,7 +3,7 @@
     "description": "Typescript rating plugin",
     "type": "typescript-plugin",
     "license": "MIT",
-    "version": "0.1.1",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Ladislav Cepek",
@@ -18,5 +18,10 @@
         "post-package-install": [
             "npm run build"
         ]
-    }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
 }
