@@ -6,6 +6,7 @@ import Icon from "./icon";
 
 export default class Rating extends Component
 {
+    public count: number;
     public value: number;
     public minValue: number;
     public maxValue: number;
@@ -18,6 +19,10 @@ export default class Rating extends Component
     public cancelIcon: object;
     public fillUp: boolean;
     public readonly: boolean;
+    public cancelHint: string;
+    public hints: Array<string>;
+    public icons: any;
+    public filledIcons: any;
 
     protected stars: StarComponent[] = [];
     protected input: InputComponent = null;
@@ -40,7 +45,16 @@ export default class Rating extends Component
 
         this.input = new InputComponent({selector: this.inputSelector, name: this.inputName, value: this.value});
 
-        this.cancel = new IconComponent({className: 'cancel-rating', icon: new Icon(this.cancelIcon)});
+        let cancelConfig = {
+            className: 'cancel-rating',
+            icon: new Icon(this.cancelIcon)
+        }
+
+        if (this.cancelHint) {
+            cancelConfig['title'] = this.cancelHint;
+        }
+
+        this.cancel = new IconComponent(cancelConfig);
     }
 
     public render() 
@@ -69,6 +83,11 @@ export default class Rating extends Component
             this.fillUp = true;
             this.value = null;
             this.readonly = false;
+            this.cancelHint = null;
+            this.hints = null;
+            this.icons = null;
+            this.filledIcons = null;
+            this.count = null;
     }
 
     protected innerRender()
@@ -80,22 +99,50 @@ export default class Rating extends Component
 
             this.node.appendChild(cancelNode);
         }
+        
+        let count = this.count ? this.count : this.maxValue
 
-        for(let value = this.minValue, n = this.maxValue; value <= n; value++) {
-            let star = new StarComponent({
+        let hints = null;
+        if (this.hints && this.hints.length === count) {
+            hints = this.hints;
+        }
+
+        for(let value = this.minValue; value <= count; value++) {
+            let index = value - this.minValue;
+
+            let starConfig = {
                 id: `rating-star-${value}`,
-                icon: new Icon(this.icon),
-                filledIcon: new Icon(this.filledIcon),
                 value: value,
-                title: value
-            });
+            }
+
+            if (this.icons !== null) {
+                starConfig['icon'] = new Icon(this.icons[index]);
+            } else {
+                starConfig['icon'] = new Icon(this.icon);
+            }
+
+            if (this.filledIcons !== null) {
+                starConfig['filledIcon'] = new Icon(this.filledIcons[index]);
+            } else {
+                starConfig['filledIcon'] = new Icon(this.filledIcon);
+            }
+
+            if (hints) {
+                starConfig['title'] = hints[index];
+            } else {
+                starConfig['title'] = value;
+            }
+
+            let star = new StarComponent(starConfig);
 
             this.stars[value] = star;
 
             let starNode = star.render();
 
             if (!this.readonly) {
-                this.registerEventListeners(starNode);
+                starNode.addEventListener('click', this.onClick.bind(this));
+                starNode.addEventListener('mouseover', this.onMouseOver.bind(this));
+                starNode.addEventListener('mouseout', this.onMouseOut.bind(this));
             }
             
             this.node.appendChild(starNode);
@@ -109,13 +156,6 @@ export default class Rating extends Component
         }
 
         this.node.appendChild(this.input.render());
-    }
-
-    protected registerEventListeners(node: HTMLElement)
-    {
-        node.addEventListener('click', this.onClick.bind(this));
-        node.addEventListener('mouseover', this.onMouseOver.bind(this));
-        node.addEventListener('mouseout', this.onMouseOut.bind(this));
     }
 
     protected onClick(event: any)
