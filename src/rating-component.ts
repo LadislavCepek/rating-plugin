@@ -149,7 +149,12 @@ export default class Rating extends Component
         if (this.value >= this.minValue && this.value <= this.maxValue) {
             if (this.stars[this.value] !== undefined) {
                 this.currentStar = this.stars[this.value]
-                this.fill(this.stars[this.value]);
+
+                if (this.fillUp) {
+                    this.fill(this.currentStar);
+                } else {
+                    this.currentStar.fill();
+                }
             }
         }
 
