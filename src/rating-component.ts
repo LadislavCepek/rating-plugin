@@ -50,9 +50,7 @@ export default class Rating extends Component
             icon: new Icon(this.cancelIcon)
         }
 
-        if (this.cancelHint) {
-            cancelConfig['title'] = this.cancelHint;
-        }
+        cancelConfig['title'] = this.cancelHint ? this.cancelHint : 'Cancel';
 
         this.cancel = new IconComponent(cancelConfig);
     }
