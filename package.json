@@ -1,7 +1,7 @@
 {
   "name": "rating-plugin",
-  "version": "0.1.1",
-  "description": "Typescript rating plugin",
+  "version": "1.0.0",
+  "description": "Typescript customizable rating plugin",
   "licenses": [
     {
       "type": "MIT",
