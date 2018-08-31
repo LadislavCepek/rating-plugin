@@ -13,6 +13,15 @@ export default class InputComponent extends Component
 
         if (this.selector) {
             this.node = document.querySelector(this.selector);
+            let value = this.node.getAttribute('value');
+
+            if (value) {
+                let parsedValue = parseInt(value, 10);
+                
+                if (parsedValue !== NaN) {
+                    this.value = parsedValue;
+                }
+            }
         }
 
         if (!this.node) {

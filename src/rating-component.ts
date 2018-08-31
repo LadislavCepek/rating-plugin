@@ -90,6 +90,10 @@ export default class Rating extends Component
 
     protected innerRender()
     {
+        let inputNode = this.input.render();
+        this.value = this.input.value;
+        console.log(this.value);
+
         if (!this.readonly) {
             let cancelNode = this.cancel.render();
 
@@ -145,11 +149,11 @@ export default class Rating extends Component
             
             this.node.appendChild(starNode);
         }
-
+        
         if (this.value >= this.minValue && this.value <= this.maxValue) {
             if (this.stars[this.value] !== undefined) {
                 this.currentStar = this.stars[this.value]
-
+                
                 if (this.fillUp) {
                     this.fill(this.currentStar);
                 } else {
@@ -158,7 +162,7 @@ export default class Rating extends Component
             }
         }
 
-        this.node.appendChild(this.input.render());
+        this.node.appendChild(inputNode);
     }
 
     protected onClick(event: any)
@@ -241,13 +245,13 @@ export default class Rating extends Component
         let shouldFill = true;
 
         this.stars.forEach(star => {
-            if (star.id === currentStar.id) {
-                shouldFill = false;
-            } 
-
             if (shouldFill) {
                 star.fill();
-            }  
+            }
+
+            if (star.id === currentStar.id) {
+                shouldFill = false;
+            }   
         });
     }
 }
