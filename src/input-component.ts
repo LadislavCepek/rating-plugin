@@ -30,6 +30,8 @@ export default class InputComponent extends Component
             this.node.setAttribute('type', 'hidden');
         }
 
+        this.node.setAttribute('class', 'rating-input');
+
         this.changeValue(this.value);
 
         return this.node;

@@ -92,7 +92,6 @@ export default class Rating extends Component
     {
         let inputNode = this.input.render();
         this.value = this.input.value;
-        console.log(this.value);
 
         if (!this.readonly) {
             let cancelNode = this.cancel.render();
