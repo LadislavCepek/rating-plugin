@@ -12,8 +12,8 @@ export default class Rating extends Component
     public maxValue: number;
     public defaultValue: number;
     public parentSelector: string;
-    public inputSelector: string;
-    public inputName: string;
+    public ratingInputConfig: object;
+    public textRatingInputConfig: object;
     public icon: object;
     public filledIcon: object;
     public cancelIcon: object;
@@ -28,6 +28,8 @@ export default class Rating extends Component
     protected input: InputComponent = null;
     protected cancel: IconComponent = null;
     protected currentStar: StarComponent = null;
+    protected textRating: InputComponent = null;
+    protected textValue: string = '';
 
     public init()
     {
@@ -42,8 +44,15 @@ export default class Rating extends Component
         if (!this.parentNode) {
             this.parentNode = document.body;
         }
-
-        this.input = new InputComponent({selector: this.inputSelector, name: this.inputName, value: this.value});
+        
+        this.ratingInputConfig['value'] = this.value;
+        this.input = new InputComponent(this.ratingInputConfig);
+        
+        if (this.textRatingInputConfig) {
+            this.textRatingInputConfig['value'] = this.textValue;
+            this.textRatingInputConfig['type'] = 'text';
+            this.textRating = new InputComponent(this.textRatingInputConfig);
+        }
 
         let cancelConfig = {
             className: 'cancel-rating',
@@ -70,8 +79,6 @@ export default class Rating extends Component
     protected setDefaultProps(): void
     {
             this.parentSelector = null;
-            this.inputName = null;
-            this.inputSelector = null;
             this.minValue = 1; 
             this.maxValue = 5; 
             this.defaultValue = 0; 
@@ -86,6 +93,8 @@ export default class Rating extends Component
             this.icons = null;
             this.filledIcons = null;
             this.count = null;
+            this.ratingInputConfig = {type: 'hidden'};
+            this.textRatingInputConfig = null;
     }
 
     protected innerRender()
@@ -162,6 +171,11 @@ export default class Rating extends Component
         }
 
         this.node.appendChild(inputNode);
+
+        if (this.textRating) {
+            let textRatingNode = this.textRating.render();
+            this.node.appendChild(textRatingNode);
+        }
     }
 
     protected onClick(event: any)
